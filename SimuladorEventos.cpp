@@ -3,12 +3,18 @@
 #include <queue>
 #include <algorithm>
 #include <float.h>
+#include <fstream>
+#include <sstream>
+
+#define CSV "csv.txt" 
+
+using namespace std;
 
 int nodoI;
 int nodoF;
 int nNodos;
 
-using namespace std;
+
 
 vector<vector<pair<double, int>>> grafo;
 
@@ -16,12 +22,12 @@ struct Package{
     int origenNode;
     vector<int> route;
     double peso;
-    int indexNode;
+    int indexNode = 0;
 };
 
 enum class EventosType{
-    PACKAGESEND = 1,
-    PACKAGEARRIVED = 2
+    PACKAGESEND,
+    PACKAGEARRIVED
 };
 
 struct Evento{
@@ -77,8 +83,14 @@ void printCamino(){
     }
 }
 
+double obtenerLatencia(int u, int v){
+    for (auto n:grafo[u]){
+        if(n.second == v) return n.first;
+    }
+    return 0;
+}
 
-Resultado dijkstra (int nodoOrigen, int nodoFinal){
+Resultado Dijkstra (int nodoOrigen, int nodoFinal){
     int numNodos = grafo.size();
     vector<double> latencias(numNodos, DBL_MAX);
     vector<int> padre(numNodos, -1);
@@ -121,45 +133,103 @@ Resultado dijkstra (int nodoOrigen, int nodoFinal){
 
 Resultado res;
 
+struct CompareEventos{
+    bool operator()(const Evento& a, const Evento& b){
+        return a.time > b.time;
+    }
+};
+
+void procesarEvento(const Evento& e, 
+    priority_queue<Evento, vector<Evento>, CompareEventos>& cola){
+
+        if(e.type == EventosType::PACKAGESEND){
+
+            int idx = e.package.indexNode;
+            int u = e.package.route[idx];
+            int v = e.package.route[idx + 1];
+
+            double lat = obtenerLatencia(u, v);
+
+            Evento next;
+
+            next.type = EventosType::PACKAGEARRIVED;
+            next.time = e.time + lat;
+            next.package = e.package;
+
+            cola.push(next);
+        }
+
+        else if(e.type == EventosType::PACKAGEARRIVED){
+            
+            Evento next;
+            next.package = e.package;
+            next.time == e.time;
+            next.package.indexNode++;
+
+            if(next.package.indexNode < next.package.route.size() - 1){
+                next.type = EventosType::PACKAGESEND;
+                cola.push(next);
+            }
+
+        }
+};
+
 int main(){
     
-    cout << "Ingrese el numero de nodos " << endl;
-    cin >> nNodos;
-
     inicializar();
+
+    ifstream archivo(CSV);
+    string linea;
+    char delimitador =',';
+    
+    //Lee el encabezado para descartarlo
+    getline(archivo, linea);
+
+    while(getline(archivo, linea)){
+
+        stringstream stream(linea);
+        string NodoInicial, NodoFinal, PesoArista;
+
+        getline(stream, NodoInicial ,delimitador);
+        getline(stream, NodoFinal ,delimitador);
+        getline(stream, PesoArista,delimitador);
+
+        dirigidoAd(stoi(NodoInicial), stoi(NodoFinal), stod(PesoArista));
+    }
+
+    archivo.close();
 
     defineNodes();
 
-do{
-    Evento event1;
+    priority_queue<Evento, vector<Evento>, CompareEventos> cola;
 
-    event1.type = EventosType::PACKAGESEND;
-    event1.package.origenNode = nodoI;
-    event1.package.indexNode = nodoI;
-    event1.package.route = res.camino;
-    event1.time = 0;
+    Resultado res = Dijkstra(0, 5);
+    auto ruta = res.camino;
+
+    Package p;
+    p.indexNode = 0;
+    p.route = ruta;
+
+    Evento e0;
+    e0.package = p;
+    e0.time = 0;
+    e0.type = EventosType::PACKAGESEND;
+
+    cola.push(e0);
     
-    Evento event2;
 
-    event2.type = EventosType::PACKAGEARRIVED;
-    event2.package.origenNode = nodoI;
-    event2.package.route = res.camino;
-    event2.package.indexNode = event1.package.indexNode + 1;
+    while(!cola.empty()){
 
-    int u = event1.package.route[event1.package.indexNode];
-    int v = event1.package.route[event1.package.indexNode + 1];
+        Evento e = cola.top();
+        cola.pop();
 
-    double latencia = 0;
+        cout << "Evento: " << (e.type == EventosType::PACKAGEARRIVED ? "ARRIVED" : "SEND")
+        <<"Tiempo: " << e.time
+        <<"Nodo: " << e.package.route[e.package.indexNode]
+        << endl;
 
-    for (auto n:grafo[u]){
-        if(n.second != v) continue;
-        latencia = n.first;
-        break;
+        procesarEvento(e, cola);
     }
-    
-
-    event2.time = event1.time + latencia;
-}while(event2.package.indexNode == nodoF);
 
     return 0;
 }
