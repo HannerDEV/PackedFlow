@@ -1,9 +1,11 @@
-#include <eventos.h>
+#include "grafo.h"
+#include "dijkstra.h"
+#include "eventos.h"
 #include <queue>
 
 Info getInfoEvent(Evento e){
 
-    string type(e.type == EventosType::PACKAGEARRIVED ? "ARRIVED" : "SEND");
+    auto type(e.type == EventosType::PACKAGEARRIVED ? "PACKAGEARRIVED" : "PACKAGESEND");
     int node = e.package.route[e.package.indexNode];
 
     Info info;
@@ -14,13 +16,7 @@ Info getInfoEvent(Evento e){
     return info;
 }
 
-struct CompareEventos{
-    bool operator()(const Evento& a, const Evento& b){
-        return a.time > b.time;
-    }
-};
-
-double obtenerLatencia(int u, int v, vector<vector<pair<double, int>>> grafo){
+double obtenerLatencia(int u, int v, const vector<vector<pair<double, int>>>& grafo){
     for (auto n:grafo[u]){
         if(n.second == v) return n.first;
     }
@@ -29,7 +25,7 @@ double obtenerLatencia(int u, int v, vector<vector<pair<double, int>>> grafo){
 
 void procesarEvento(const Evento& e, 
     priority_queue<Evento, vector<Evento>, CompareEventos>& cola, 
-    vector<vector<pair<double, int>>> grafo){
+     const vector<vector<pair<double, int>>>& grafo){
 
         if(e.type == EventosType::PACKAGESEND){
 

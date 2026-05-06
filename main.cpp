@@ -1,9 +1,16 @@
+#include "grafo.h"
+#include "dijkstra.h"
+#include "eventos.h"
+#include <queue>
+#include <utility>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+
 int main(){
-    
-    
     priority_queue<Evento, vector<Evento>, CompareEventos> cola;
 
-    Resultado res = Dijkstra(0, 5);
+    Resultado res = Dijkstra(0, 5, grafo);
     auto ruta = res.camino;
 
     Package p;
@@ -26,14 +33,14 @@ int main(){
 
         Info event = getInfoEvent(e);
 
-        cout << "Evento: " << event.type
+        cout << "Evento: " << event.node
         <<"Tiempo: " << e.time
         <<"Nodo: " << event.node
         << endl;
 
 
 
-        procesarEvento(e, cola);
+        procesarEvento(e, cola, grafo);
     }
 
     return 0;

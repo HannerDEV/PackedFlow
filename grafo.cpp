@@ -1,9 +1,15 @@
-#include <grafo.h>
+#include "grafo.h"
 #include <utility>
 #include <fstream>
 #include <sstream>
 
 #define GRAFO "csvGrafo.txt" 
+
+vector<vector<pair<double, int>>> grafo;
+
+void dirigidoAd(int n, int n2, double p2){
+    grafo[n-1].emplace_back(p2, n2-1);
+}
 
 void inicializar(){
     ifstream archivo(GRAFO);
@@ -26,9 +32,4 @@ void inicializar(){
     }
 
     archivo.close();
-}
-
-
-void dirigidoAd(int n, int n2, double p2){
-    grafo[n-1].emplace_back(p2, n2-1);
 }

@@ -1,4 +1,5 @@
-#include <dijkstra.h>
+#include "dijkstra.h"
+#include "grafo.h"
 #include <algorithm>
 #include <float.h>
 #include <queue>
@@ -29,15 +30,16 @@ Nodes defineNodes(){
     return destiny;
 }
 
-Resultado Dijkstra (int nodoOrigen, int nodoFinal, vector<vector<pair<double, int>>> grafo){
+
+Resultado Dijkstra(int origen, int destino, const vector<vector<pair<double, int>>>& grafo){
     int numNodos = grafo.size();
     vector<double> latencias(numNodos, DBL_MAX);
     vector<int> padre(numNodos, -1);
 
-    latencias[nodoOrigen] = 0;
+    latencias[origen] = 0;
 
     priority_queue<pair<double,int>, vector<pair<double,int>>, greater<pair<double,int>>> siguiente;
-    siguiente.push({0, nodoOrigen});
+    siguiente.push({0, origen});
 
     while(!siguiente.empty()){
         double latencia = siguiente.top().first;
@@ -58,13 +60,13 @@ Resultado Dijkstra (int nodoOrigen, int nodoFinal, vector<vector<pair<double, in
     }
 
     vector<int> camino;
-    for(int v = nodoFinal; v != -1; v = padre[v]){
+    for(int v = destino; v != -1; v = padre[v]){
         camino.push_back(v);
     }
     reverse(camino.begin(), camino.end());
 
     Resultado res;
-    res.distancia = latencias[nodoFinal];
+    res.distancia = latencias[destino];
     res.camino = camino;
 
     return res;
