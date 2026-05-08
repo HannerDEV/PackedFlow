@@ -8,9 +8,17 @@
 #include <iostream>
 
 int main(){
+
+    inicializar();
+
+    //Creamos la cola, para eventos
     priority_queue<Evento, vector<Evento>, CompareEventos> cola;
 
-    Resultado res = Dijkstra(0, 5, grafo);
+    //Se define el inicio y el destino de el camino
+    Nodes direction = defineNodes();
+    
+    //Busca el camino mas corto
+    Resultado res = Dijkstra(direction.nI, direction.nF, grafo);
     auto ruta = res.camino;
 
     Package p;
@@ -24,6 +32,7 @@ int main(){
 
     cola.push(e0);
     
+    //proximo guardado en csv
     ofstream archivo("csvEventos.csv");
 
     while(!cola.empty()){
@@ -32,15 +41,21 @@ int main(){
         cola.pop();
 
         Info event = getInfoEvent(e);
-
-        cout << "Evento: " << event.node
-        <<"Tiempo: " << e.time
-        <<"Nodo: " << event.node
-        << endl;
-
-
-
-        procesarEvento(e, cola, grafo);
+        
+        if(!(event.type == "PACKAGESEND")){
+            cout << "Evento: " << event.type << "  "
+            <<"Tiempo: " << e.time  << "  "
+            <<"Nodo: " << event.node << "  "
+            << endl;
+        }
+        else{
+            cout << "Evento: " << event.type << "  "
+            <<"Tiempo: " << e.time  << "  "
+            <<"Nodo: " <<  event.node << "-" << event.next_node
+            << endl;
+        }
+        
+        procesarEvento(e, cola, grafo); 
     }
 
     return 0;

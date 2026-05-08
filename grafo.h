@@ -6,4 +6,6 @@
 using namespace std;
 
 extern vector<vector<pair<double, int>>> grafo;
+
+void inicializar();
 #endif

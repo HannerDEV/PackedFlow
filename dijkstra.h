@@ -18,6 +18,8 @@ struct Nodes{
     int nF;
 };
 
+Nodes defineNodes();
+
 
 
 #endif

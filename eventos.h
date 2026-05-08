@@ -16,7 +16,7 @@ struct Package{
     int origenNode;
     vector<int> route;
     double peso;
-    int indexNode = 0;
+    int indexNode;
 };
 
 struct Evento{
@@ -28,6 +28,7 @@ struct Evento{
 struct Info{
     string type;
     int node;
+    int next_node;
 };
 
 struct CompareEventos{

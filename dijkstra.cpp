@@ -6,26 +6,33 @@
 #include <fstream>
 #include <sstream>
 
-#define DIRECCION "csvDireccion.txt" 
+#define DIRECCION "csvDireccion.csv" 
 
 
 Nodes defineNodes(){
+
     ifstream archivo(DIRECCION);
     string linea;
     char delimitador = ',';
 
+    //Se ignora la primera linea, y pasa a la siguiente
     getline(archivo, linea);
+    getline(archivo, linea);
+
 
     stringstream stream(linea);
     string NodoInicial, NodoFinal;
 
+    //Se guarda el nodo inicial y el final
     getline(stream, NodoInicial ,delimitador);
     getline(stream, NodoFinal ,delimitador);
-
+    
+    //Nodo
     Nodes destiny;
 
-    destiny.nI = stoi(NodoInicial);
-    destiny.nF = stoi(NodoFinal);
+    //Se pasa el nodoInicial a entero
+    destiny.nI = stoi(NodoInicial)-1;
+    destiny.nF = stoi(NodoFinal)-1;
 
     return destiny;
 }
