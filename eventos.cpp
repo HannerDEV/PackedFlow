@@ -2,7 +2,6 @@
 #include "dijkstra.h"
 #include "eventos.h"
 #include <queue>
-#include <iostream>
 
 Info getInfoEvent(Evento e){
 

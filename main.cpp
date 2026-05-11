@@ -5,7 +5,6 @@
 #include <utility>
 #include <fstream>
 #include <sstream>
-#include <iostream>
 
 int main(){
 
@@ -33,7 +32,8 @@ int main(){
     cola.push(e0);
     
     //proximo guardado en csv
-    ofstream archivo("csvEventos.csv");
+    ofstream archivo("Eventos.csv");
+    archivo << "Evento,Tiempo,Nodo"<<endl;
 
     while(!cola.empty()){
 
@@ -43,16 +43,10 @@ int main(){
         Info event = getInfoEvent(e);
         
         if(!(event.type == "PACKAGESEND")){
-            cout << "Evento: " << event.type << "  "
-            <<"Tiempo: " << e.time  << "  "
-            <<"Nodo: " << event.node << "  "
-            << endl;
+            archivo << event.type << "," << e.time  << "," << event.node+1 << endl;
         }
         else{
-            cout << "Evento: " << event.type << "  "
-            <<"Tiempo: " << e.time  << "  "
-            <<"Nodo: " <<  event.node << "-" << event.next_node
-            << endl;
+            archivo << event.type << "," << e.time  << "," <<  event.node+1 << "-" << event.next_node + 1<< endl;
         }
         
         procesarEvento(e, cola, grafo); 

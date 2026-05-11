@@ -6,7 +6,7 @@
 #include <fstream>
 #include <sstream>
 
-#define DIRECCION "csvDireccion.csv" 
+#define DIRECCION "Direccion.csv" 
 
 
 Nodes defineNodes(){

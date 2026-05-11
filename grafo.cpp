@@ -4,7 +4,7 @@
 #include <sstream>
 #include <iostream>
 
-#define GRAFO "csvGrafo.csv" 
+#define GRAFO "Grafo.csv" 
 
 vector<vector<pair<double, int>>> grafo;
 
