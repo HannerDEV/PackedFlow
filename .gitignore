@@ -1,5 +1,5 @@
 /build/
 /.vscode/
-/Direccion.csv/
-/Eventos.csv/
-/grafo.csv/
+Direccion.csv
+Eventos.csv
+grafo.csv
