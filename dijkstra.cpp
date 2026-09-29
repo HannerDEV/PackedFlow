@@ -9,30 +9,13 @@
 #define DIRECCION "Direccion.csv" 
 
 
-Nodes defineNodes(){
-
-    ifstream archivo(DIRECCION);
-    string linea;
-    char delimitador = ',';
-
-    //Se ignora la primera linea, y pasa a la siguiente
-    getline(archivo, linea);
-    getline(archivo, linea);
-
-
-    stringstream stream(linea);
-    string NodoInicial, NodoFinal;
-
-    //Se guarda el nodo inicial y el final
-    getline(stream, NodoInicial ,delimitador);
-    getline(stream, NodoFinal ,delimitador);
-    
+Nodes defineNodes(int NodoInicial, int NodoFinal){
     //Nodo
     Nodes destiny;
 
     //Se pasa el nodoInicial a entero
-    destiny.nI = stoi(NodoInicial)-1;
-    destiny.nF = stoi(NodoFinal)-1;
+    destiny.nI = NodoInicial - 1;
+    destiny.nF = NodoFinal - 1;
 
     return destiny;
 }
@@ -55,9 +38,10 @@ Resultado Dijkstra(int origen, int destino, const vector<vector<pair<double, int
 
         if(latencia > latencias[nodo])    continue;
 
-        for(pair<int, double> arista : grafo[nodo]){
+        for(pair<double, int> arista : grafo[nodo]){
             double latencia = arista.first;
             int vecino = arista.second;
+
             if(latencias[vecino] > latencias[nodo] + latencia){
                latencias[vecino] = latencias[nodo] + latencia;
                 padre[vecino] = nodo;

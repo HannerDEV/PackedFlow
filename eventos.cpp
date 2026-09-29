@@ -7,7 +7,11 @@ Info getInfoEvent(Evento e){
 
     auto type(e.type == EventosType::PACKAGEARRIVED ? "PACKAGEARRIVED" : "PACKAGESEND");
     int node = e.package.route[e.package.indexNode];
-    int next_node = e.package.route[e.package.indexNode + 1];
+    int next_node = -1;
+
+    if(e.package.indexNode + 1 < e.package.route.size()){
+        next_node = e.package.route[e.package.indexNode + 1];
+    }
 
     Info info;
 
@@ -33,7 +37,7 @@ void procesarEvento(const Evento& e,
 
         int idx = e.package.indexNode;
 
-        if(!(idx >= e.package.route.size()-1)){
+        if(idx < e.package.route.size()-1){
             int u = e.package.route[idx];
             int v = e.package.route[idx + 1];
 

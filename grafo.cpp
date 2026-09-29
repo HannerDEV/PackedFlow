@@ -11,41 +11,41 @@ vector<vector<pair<double, int>>> grafo;
 void dirigidoAd(int n, int n2, double p2){
     grafo[n-1].emplace_back(p2, n2-1);
 }
-void inicializar(){
-    //abre el csv Grafo
-    ifstream archivo(GRAFO);
+void inicializar(int argc, char* argv[]){
 
-    //Define linea
-    string linea;
-    char delimitador = ',';
-
-    // descartar encabezado
-    getline(archivo, linea); 
-
-    //crea vector de aristas
     vector<tuple<int,int,double>> aristas;
     int maxNodo = 0;
 
-    // leer todo y encontrar nodo máximo
-    while(getline(archivo, linea)){
-        stringstream stream(linea);
-        string NodoInicial, NodoFinal, PesoArista;
 
-        getline(stream, NodoInicial ,delimitador);
-        getline(stream, NodoFinal ,delimitador);
-        getline(stream, PesoArista,delimitador);
+// leer todo y encontrar nodo máximo
+    for(int i = 3; i < argc; i++){
+        string conexion = argv[i];
+        int maxnodo = 0;
 
-        int u = stoi(NodoInicial);
-        int v = stoi(NodoFinal);
-        double w = stod(PesoArista);
+        stringstream ss(conexion);
+        string dato;
 
-        aristas.emplace_back(u, v, w);
+        getline(ss, dato, ',');
+        int origen = stoi(dato);
 
-        if(u > maxNodo) maxNodo = u;
-        if(v > maxNodo) maxNodo = v;
+        getline(ss, dato, ',');
+        int destino = stoi(dato);
+
+        getline(ss, dato, ',');
+        double peso = stod(dato);
+
+        if(origen > maxNodo) maxNodo = origen;
+        if(destino > maxNodo) maxNodo = destino;
+
+        tuple<int, int, double> conexionR;
+
+        get<0>(conexionR) = origen;
+        get<1>(conexionR) = destino;
+        get<2>(conexionR) = peso;
+
+        aristas.push_back(conexionR);
     }
 
-    archivo.close();
 
     // redimensionar grafo
     grafo.resize(maxNodo);
@@ -54,7 +54,7 @@ void inicializar(){
     for(tuple<int,int,double>& arista : aristas){
         int u = get<0>(arista);
         int v = get<1>(arista);
-        int w = get<2>(arista);
+        double w = get<2>(arista);
         dirigidoAd(u, v, w);
     }
 }

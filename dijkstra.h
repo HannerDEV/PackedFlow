@@ -18,7 +18,7 @@ struct Nodes{
     int nF;
 };
 
-Nodes defineNodes();
+Nodes defineNodes(int NodoInicial, int NodoFinal);
 
 
 

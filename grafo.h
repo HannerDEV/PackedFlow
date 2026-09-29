@@ -7,5 +7,5 @@ using namespace std;
 
 extern vector<vector<pair<double, int>>> grafo;
 
-void inicializar();
+void inicializar(int argc, char* argv[]);
 #endif
