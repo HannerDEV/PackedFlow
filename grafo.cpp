@@ -6,30 +6,30 @@
 
 #define GRAFO "grafo.csv" 
 
-vector<vector<pair<double, int>>> grafo;
+vector<vector<pair<double, long long>>> grafo;
 
-void dirigidoAd(int n, int n2, double p2){
+void dirigidoAd(long long n, long long n2, double p2){
     grafo[n-1].emplace_back(p2, n2-1);
 }
 void inicializar(int argc, char* argv[]){
 
-    vector<tuple<int,int,double>> aristas;
+    vector<tuple<long long,long long,double>> aristas;
     int maxNodo = 0;
 
 
 // leer todo y encontrar nodo máximo
     for(int i = 3; i < argc; i++){
         string conexion = argv[i];
-        int maxnodo = 0;
+        long long maxnodo = 0;
 
         stringstream ss(conexion);
         string dato;
 
         getline(ss, dato, ',');
-        int origen = stoi(dato);
+        long long origen = stoll(dato);
 
         getline(ss, dato, ',');
-        int destino = stoi(dato);
+        long long destino = stoll(dato);
 
         getline(ss, dato, ',');
         double peso = stod(dato);
@@ -37,7 +37,7 @@ void inicializar(int argc, char* argv[]){
         if(origen > maxNodo) maxNodo = origen;
         if(destino > maxNodo) maxNodo = destino;
 
-        tuple<int, int, double> conexionR;
+        tuple<long long, long long, double> conexionR;
 
         get<0>(conexionR) = origen;
         get<1>(conexionR) = destino;
@@ -51,9 +51,9 @@ void inicializar(int argc, char* argv[]){
     grafo.resize(maxNodo);
 
     // insertar aristas
-    for(tuple<int,int,double>& arista : aristas){
-        int u = get<0>(arista);
-        int v = get<1>(arista);
+    for(tuple<long long,long long,double>& arista : aristas){
+        long long u = get<0>(arista);
+        long long v = get<1>(arista);
         double w = get<2>(arista);
         dirigidoAd(u, v, w);
     }

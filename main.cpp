@@ -17,8 +17,8 @@ int main(int argc, char* argv[]){
     inicializar(argc, argv);
 
 
-    int ni = std::stoi(argv[1]);
-    int nf = std::stoi(argv[2]);
+    long long ni = std::stoll(argv[1]);
+    long long nf = std::stoll(argv[2]);
 
     //Creamos la cola, para eventos
     priority_queue<Evento, vector<Evento>, CompareEventos> cola;

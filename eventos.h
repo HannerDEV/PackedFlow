@@ -13,8 +13,8 @@ enum class EventosType{
 };
 
 struct Package{
-    int origenNode;
-    vector<int> route;
+    long long origenNode;
+    vector<long long> route;
     double peso;
     int indexNode;
 };
@@ -27,8 +27,8 @@ struct Evento{
 
 struct Info{
     string type;
-    int node;
-    int next_node;
+    long long node;
+    long long next_node;
 };
 
 struct CompareEventos{
@@ -39,7 +39,7 @@ struct CompareEventos{
 
 void procesarEvento(const Evento& e, 
     priority_queue<Evento, vector<Evento>, CompareEventos>& cola, 
-    const vector<vector<pair<double, int>>>& grafo);
+    const vector<vector<pair<double, long long>>>& grafo);
 
 Info getInfoEvent(Evento e);
 

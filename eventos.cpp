@@ -6,8 +6,8 @@
 Info getInfoEvent(Evento e){
 
     auto type(e.type == EventosType::PACKAGEARRIVED ? "PACKAGEARRIVED" : "PACKAGESEND");
-    int node = e.package.route[e.package.indexNode];
-    int next_node = -1;
+    long long node = e.package.route[e.package.indexNode];
+    long long next_node = -1;
 
     if(e.package.indexNode + 1 < e.package.route.size()){
         next_node = e.package.route[e.package.indexNode + 1];
@@ -22,7 +22,7 @@ Info getInfoEvent(Evento e){
     return info;
 }
 
-double getLatency(int u, int v, const vector<vector<pair<double, int>>>& grafo){
+double getLatency(long long u, long long v, const vector<vector<pair<double, long long>>>& grafo){
     for (auto n:grafo[u]){
         if(n.second == v) return n.first;
     }
@@ -31,7 +31,7 @@ double getLatency(int u, int v, const vector<vector<pair<double, int>>>& grafo){
 
 void procesarEvento(const Evento& e, 
     priority_queue<Evento, vector<Evento>, CompareEventos>& cola, 
-    const vector<vector<pair<double, int>>>& grafo){
+    const vector<vector<pair<double, long long>>>& grafo){
 
     if(e.type == EventosType::PACKAGESEND){
 

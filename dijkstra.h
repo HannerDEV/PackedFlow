@@ -7,18 +7,18 @@ using namespace std;
 
 struct Resultado {
     double distancia;
-    vector<int> camino;
+    vector<long long> camino;
 };
 
 
-Resultado Dijkstra(int origen, int destino, const vector<vector<pair<double, int>>>& grafo);
+Resultado Dijkstra(long long origen, long long destino, const vector<vector<pair<double, long long>>>& grafo);
 
 struct Nodes{
-    int nI;
-    int nF;
+    long long nI;
+    long long nF;
 };
 
-Nodes defineNodes(int NodoInicial, int NodoFinal);
+Nodes defineNodes(long long NodoInicial, long long NodoFinal);
 
 
 

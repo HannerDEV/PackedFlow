@@ -5,7 +5,7 @@
 
 using namespace std;
 
-extern vector<vector<pair<double, int>>> grafo;
+extern vector<vector<pair<double, long long>>> grafo;
 
 void inicializar(int argc, char* argv[]);
 #endif

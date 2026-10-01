@@ -9,7 +9,7 @@
 #define DIRECCION "Direccion.csv" 
 
 
-Nodes defineNodes(int NodoInicial, int NodoFinal){
+Nodes defineNodes(long long NodoInicial, long long NodoFinal){
     //Nodo
     Nodes destiny;
 
@@ -21,26 +21,26 @@ Nodes defineNodes(int NodoInicial, int NodoFinal){
 }
 
 
-Resultado Dijkstra(int origen, int destino, const vector<vector<pair<double, int>>>& grafo){
+Resultado Dijkstra(long long origen, long long destino, const vector<vector<pair<double, long long>>>& grafo){
     int numNodos = grafo.size();
     vector<double> latencias(numNodos, DBL_MAX);
-    vector<int> padre(numNodos, -1);
+    vector<long long> padre(numNodos, -1);
 
     latencias[origen] = 0;
 
-    priority_queue<pair<double,int>, vector<pair<double,int>>, greater<pair<double,int>>> siguiente;
+    priority_queue<pair<double,long long>, vector<pair<double,long long>>, greater<pair<double,long long>>> siguiente;
     siguiente.push({0, origen});
 
     while(!siguiente.empty()){
         double latencia = siguiente.top().first;
-        int nodo = siguiente.top().second;
+        long long nodo = siguiente.top().second;
         siguiente.pop();
 
         if(latencia > latencias[nodo])    continue;
 
-        for(pair<double, int> arista : grafo[nodo]){
+        for(pair<double, long long> arista : grafo[nodo]){
             double latencia = arista.first;
-            int vecino = arista.second;
+            long long vecino = arista.second;
 
             if(latencias[vecino] > latencias[nodo] + latencia){
                latencias[vecino] = latencias[nodo] + latencia;
@@ -50,7 +50,7 @@ Resultado Dijkstra(int origen, int destino, const vector<vector<pair<double, int
         }        
     }
 
-    vector<int> camino;
+    vector<long long> camino;
     for(int v = destino; v != -1; v = padre[v]){
         camino.push_back(v);
     }
