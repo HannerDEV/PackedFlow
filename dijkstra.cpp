@@ -13,9 +13,12 @@ Nodes defineNodes(long long NodoInicial, long long NodoFinal){
     //Nodo
     Nodes destiny;
 
+    int indiceInicial = obtenerIndice(NodoInicial);
+    int indiceFinal = obtenerIndice(NodoFinal);
+
     //Se pasa el nodoInicial a entero
-    destiny.nI = NodoInicial - 1;
-    destiny.nF = NodoFinal - 1;
+    destiny.nI = indiceInicial;
+    destiny.nF = indiceFinal;
 
     return destiny;
 }

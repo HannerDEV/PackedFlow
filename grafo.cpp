@@ -7,14 +7,27 @@
 #define GRAFO "grafo.csv" 
 
 vector<vector<pair<double, long long>>> grafo;
+unordered_map<long long, int> indiceNodo;
+vector<long long> idNodo;
+
+int obtenerIndice(long long id){
+    return indiceNodo[id];
+}
+
+long long obtenerId(int indice){
+    return idNodo[indice];
+}
 
 void dirigidoAd(long long n, long long n2, double p2){
-    grafo[n-1].emplace_back(p2, n2-1);
+    int indiceOrigen = obtenerIndice(n);
+    int indiceDestino = obtenerIndice(n2);
+    grafo[indiceOrigen].emplace_back(p2, indiceDestino);
 }
 void inicializar(int argc, char* argv[]){
 
     vector<tuple<long long,long long,double>> aristas;
     int maxNodo = 0;
+
 
 
 // leer todo y encontrar nodo máximo
@@ -30,6 +43,18 @@ void inicializar(int argc, char* argv[]){
 
         getline(ss, dato, ',');
         long long destino = stoll(dato);
+
+        if(indiceNodo.find(origen) == indiceNodo.end()){
+            int indice = idNodo.size();
+            indiceNodo[origen] = indice;
+            idNodo.push_back(origen);
+        }
+
+        if(indiceNodo.find(destino) == indiceNodo.end()){
+            int indice = idNodo.size();
+            indiceNodo[destino] = indice;
+            idNodo.push_back(destino);
+        }
 
         getline(ss, dato, ',');
         double peso = stod(dato);
@@ -48,7 +73,7 @@ void inicializar(int argc, char* argv[]){
 
 
     // redimensionar grafo
-    grafo.resize(maxNodo);
+    grafo.resize((idNodo.size()));
 
     // insertar aristas
     for(tuple<long long,long long,double>& arista : aristas){

@@ -2,15 +2,23 @@
 #include "dijkstra.h"
 #include "eventos.h"
 #include <queue>
+#include <iostream>
 
 Info getInfoEvent(Evento e){
 
     auto type(e.type == EventosType::PACKAGEARRIVED ? "PACKAGEARRIVED" : "PACKAGESEND");
-    long long node = e.package.route[e.package.indexNode];
+    long long node = obtenerId(e.package.route[e.package.indexNode]);
+    cout << "INDEX NODE: " << e.package.indexNode << endl;
+
+    cout << "RUTA DEL EVENTO: ";
+    for(auto nodo : e.package.route){
+        cout << nodo << " ";
+    }
+    cout << endl;
     long long next_node = -1;
 
     if(e.package.indexNode + 1 < e.package.route.size()){
-        next_node = e.package.route[e.package.indexNode + 1];
+        next_node = obtenerId(e.package.route[e.package.indexNode + 1]);
     }
 
     Info info;
